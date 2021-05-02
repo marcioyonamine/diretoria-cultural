@@ -578,7 +578,7 @@ function evento($id){
 		'titulo' => $res['nomeEvento'],
 		'idTipo' => $res['idTipo'],
 		'programa' => $programa['tipo'],
-		'projeto' => $projeto['tipo'],
+
 		'linguagem' => $linguagem['tipo'],
 		'responsavel' => $usercon,
 		'autor' => $res['autor'],
@@ -626,8 +626,8 @@ function evento($id){
 	$res_oc = $wpdb->get_results($sql_oc,ARRAY_A);
 	for($i = 0;$i < count($res_oc); $i++){
 		$id_local = tipo($res_oc[$i]['local']);
-		$x = json_decode($id_local['descricao'],ARRAY_A);
-		$mapas_local = $x['mapas'];
+		$x = isset($id_local['descricao']) ? json_decode($id_local['descricao'],ARRAY_A) : 0;
+		$mapas_local = isset($x['mapas']) ? $x['mapas'] : 0;
 		$evento['mapas']['ocorrencia'][$i]['spaceId'] = $mapas_local;
 		$oc_legivel = ocorrencia($res_oc[$i]['idOcorrencia']);
 		if($res_oc[$i]['dataFinal'] == '0000-00-00'){ // evento de data úntica
@@ -801,7 +801,7 @@ function ocorrencia($id){
 	
 }
 
-$local = tipo($oc['local']);
+$local = isset($oc['local']) ? tipo($oc['local']) : 0;
 
 $ocorrencia = array(
 	'tipo' => $tipo,
