@@ -803,6 +803,7 @@ function ocorrencia($id){
 
 $local = isset($oc['local']) ? tipo($oc['local']) : 0;
 
+$loc = isset($local) ? $local : 0;
 $ocorrencia = array(
 	'tipo' => $tipo,
 	'data' =>  $data,
