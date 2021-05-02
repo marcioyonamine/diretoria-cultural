@@ -452,13 +452,6 @@ if(isset($_SESSION['id'])){
 					</div>
 					<div class="form-group">
 						<div class="col-md-offset-2">
-							<label>Projeto *</label>
-							<select class="form-control" name="projeto" id="projeto" >
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-offset-2">
 							<label>Linguagem Principal *</label>
 							<select class="form-control" name="linguagem" id="inputSubject" >
 								<?php geraTipoOpcao("linguagens") ?>
@@ -476,10 +469,12 @@ if(isset($_SESSION['id'])){
 					</div>
 					<div class="form-group">
 						<div class="col-md-offset-2">
-							<label>Projeto Interno</label>
+							<label>Indicador</label>
 							<input type="text" name="pInterno" class="form-control" id="inputSubject" />
 						</div> 
 					</div>	
+
+
 					<div class="form-group">
 						<br />
 						<p>O responsável e suplente devem estar cadastrados como usuários do sistema. </p>
@@ -516,12 +511,7 @@ if(isset($_SESSION['id'])){
 							<input type="text" name="nomeGrupo" class="form-control" maxlength="100" id="inputSubject" placeholder="Nome do coletivo, grupo teatral, etc." value=""/>
 						</div> 
 					</div>
-					<div class="form-group">
-						<div class="col-md-offset-2">
-							<label>Número de Inscrição CulturAZ (caso tenha sido selecionado via plataforma)</label>
-							<input type="text" name="inscricao" class="form-control" maxlength="100" id="inputSubject" placeholder="" value=""/>
-						</div> 
-					</div>
+
 					<div class="form-group">
 						<div class="col-md-offset-2">
 							<label>Público Previsto</label>
@@ -619,7 +609,6 @@ if(isset($_POST['atualizar']) OR isset($_POST['inserir'])){
 	$programa    = $_POST["programa"];
 	$linguagem    = $_POST["linguagem"];
 	$tipo_evento = $_POST["tipo_evento"];
-	$projeto = $_POST["projeto"];
 	$nomeResponsavel = $_POST["nomeResponsavel"];
 	$suplente = $_POST["suplente"];
 	$nomeGrupo = addslashes($_POST["nomeGrupo"]);
@@ -629,7 +618,6 @@ if(isset($_POST['atualizar']) OR isset($_POST['inserir'])){
 	$descricao = addslashes($_POST["descricao"]);
 	$releaseCom = addslashes($_POST["releaseCom"]);
 	$linksCom = addslashes($_POST["linksCom"]);
-	$inscricao = $_POST['inscricao'];
 	$p_interno = addslashes($_POST['pInterno']);
 	$id_aprovacao = $_POST['id_aprovacao'];
 	$previsto = $_POST['previsto'];		
@@ -657,8 +645,8 @@ $idUser = $user->ID;
 
 	// Inserir evento
 if(isset($_POST['inserir'])){
-	$sql = "INSERT INTO `sc_evento` (`idEvento`, `idTipo`, `idPrograma`, `idProjeto`, `idLinguagem`, `nomeEvento`, `idResponsavel`, `idSuplente`, `nomeGrupo`, `fichaTecnica`, `faixaEtaria`, `sinopse`, `releaseCom`, `publicado`, `idUsuario`, `linksCom`, `subEvento`, `dataEnvio`, `planejamento`, `inscricao`, `pInterno` , `idRespAprovacao`, `status` , `previsto`, `descricao`,`ano_base`,`online`, `url` ) 
-	VALUES (NULL, '$tipo_evento', '$programa', '$projeto', '$linguagem', '$nomeEvento', '$nomeResponsavel', '$suplente', '$nomeGrupo', '$fichaTecnica', '$faixaEtaria', '$sinopse', '$releaseCom', '1', '$idUser', '$linksCom', 'subEvento', NULL, '$planejamento','$inscricao','$p_interno', '$id_aprovacao','1','$previsto','$descricao','2021','$online','$urlonline')";
+	$sql = "INSERT INTO `sc_evento` (`idEvento`, `idTipo`, `idPrograma`, `idLinguagem`, `nomeEvento`, `idResponsavel`, `idSuplente`, `nomeGrupo`, `fichaTecnica`, `faixaEtaria`, `sinopse`, `releaseCom`, `publicado`, `idUsuario`, `linksCom`, `subEvento`, `dataEnvio`, `planejamento`,  `pInterno` , `idRespAprovacao`, `status` , `previsto`, `descricao`,`ano_base`,`online`, `url` ) 
+	VALUES (NULL, '$tipo_evento', '$programa', '$linguagem', '$nomeEvento', '$nomeResponsavel', '$suplente', '$nomeGrupo', '$fichaTecnica', '$faixaEtaria', '$sinopse', '$releaseCom', '1', '$idUser', '$linksCom', 'subEvento', NULL, '$planejamento','$p_interno', '$id_aprovacao','1','$previsto','$descricao','2021','$online','$urlonline')";
 	$ins = $wpdb->query($sql);
 	if($ins){
 		$mensagem = "Inserido com sucesso";
@@ -681,7 +669,6 @@ if(isset($_POST['atualizar'])){
 	$sql_atualizar = "UPDATE sc_evento SET
 	`idTipo` = '$tipo_evento',
 	`idPrograma` = '$programa' ,
-	`idProjeto` =  '$projeto',
 	`idLinguagem` = '$linguagem',
 	`nomeEvento` = '$nomeEvento',
 	`idResponsavel` = '$nomeResponsavel',
@@ -696,9 +683,7 @@ if(isset($_POST['atualizar'])){
 	`subEvento` = '$subEvento',
 	`pInterno` = '$p_interno',
 	`idRespAprovacao` = '$id_aprovacao',
-	`inscricao` = '$inscricao',
 	`descricao` = '$descricao',
-
 	`previsto` = '$previsto',
 	`online` = '$online',
 	`url` = '$urlonline'
@@ -773,7 +758,7 @@ if(isset($_POST['atualizar'])){
 
 					<div class="form-group">
 						<div class="col-md-offset-2">
-							<label>Nome do Evento *</label>
+							<label>Título do Evento *</label>
 							<input type="text" name="nomeEvento" class="form-control" id="inputSubject" value="<?php echo stripslashes($evento['nomeEvento']); ?>"/>
 						</div> 
 					</div>
@@ -786,15 +771,7 @@ if(isset($_POST['atualizar'])){
 							</select>
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-md-offset-2">
-							<label>Projeto *</label>
-							<select class="form-control" name="projeto" id="projeto" >
-								<option>Escolha uma opção</option>
-								<?php geraTipoOpcao("projeto",$evento['idProjeto']) ?>								
-							</select>
-						</div>
-					</div>
+
 					<div class="form-group">
 						<div class="col-md-offset-2">
 							<label>Linguagem Principal *</label>
@@ -856,12 +833,7 @@ if(isset($_POST['atualizar'])){
 							<input type="text" name="nomeGrupo" class="form-control" maxlength="100" id="inputSubject" placeholder="Nome do coletivo, grupo teatral, etc." value="<?php echo stripslashes($evento['nomeGrupo']); ?>"/>
 						</div> 
 					</div>		
-					<div class="form-group">
-						<div class="col-md-offset-2">
-							<label>Número de Inscrição CulturAZ (caso tenha sido selecionado via plataforma)</label>
-							<input type="text" name="inscricao" class="form-control" maxlength="100" id="inputSubject" placeholder="" value="<?php echo $evento['inscricao']; ?>"/>
-						</div> 
-					</div>
+
 					<div class="form-group">
 						<div class="col-md-offset-2">
 							<label>Público Previsto</label>

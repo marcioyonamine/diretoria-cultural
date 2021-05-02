@@ -1602,7 +1602,10 @@ function retornaLocais($idEvento){
 	$x = "";
 	for($i = 0; $i < count($res) ; $i++){
 		$t = tipo($res[$i]['local']);
-		$x .= $t['tipo'].",";
+		
+		
+		$x .= isset($t['tipo']) ? count($t['tipo']) : 0;
+		$x .= ",";
 		
 	}
 	return  substr($x, 0, -1);
